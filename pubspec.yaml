@@ -1,0 +1,37 @@
+name: shop_app
+description: "A new Flutter project."
+publish_to: 'none' # Prevent accidental publication to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+ 
+  provider: ^6.1.2
+  cupertino_icons: ^1.0.8
+  curved_labeled_navigation_bar: ^2.0.5
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
+
+  # # Assets
+  assets:
+    - assets/images/
+   
+
+  # Fonts
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Light.ttf
+        - asset: assets/fonts/Lato-Bold.ttf
+          weight: 700
