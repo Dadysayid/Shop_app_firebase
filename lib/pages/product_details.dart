@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/cart_provider.dart';
+import 'package:shop_app/providers/favorites_provider.dart';
 
 class ProductDetails extends StatefulWidget {
   final Map<String, Object> product;
@@ -34,9 +35,26 @@ class _ProductDetailsState extends State<ProductDetails> {
 
   @override
   Widget build(BuildContext context) {
+    final favoritesProvider = Provider.of<FavoritesProvider>(context);
+    bool isFavorite = favoritesProvider.isFavorite(widget.product);
     return Scaffold(
-      appBar: AppBar(
-        title: Text("details"),
+      appBar:  AppBar(
+        title: Text("Details"),
+        actions: [
+          IconButton(
+            icon: Icon(
+              isFavorite ? Icons.favorite : Icons.favorite_border,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              if (isFavorite) {
+                favoritesProvider.removeFavorite(widget.product);
+              } else {
+                favoritesProvider.addFavorite(widget.product);
+              }
+            },
+          )
+        ],
       ),
       body: Column(
         children: [

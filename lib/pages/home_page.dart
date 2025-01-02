@@ -1,7 +1,7 @@
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
 import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/pages/settings.dart';
+import 'package:shop_app/pages/favorites_page.dart';
 import 'package:shop_app/pages/cart_page.dart';
 import 'package:shop_app/widgets/product_list.dart';
 
@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> pages = [
     const ProductList(),
     const CartPage(),
-    const Settings(),
+    const  FavoritesPage(),
   ];
 
   int currentPage = 0;
