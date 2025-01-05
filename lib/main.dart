@@ -1,6 +1,8 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/pages/sgin_in.dart';
+import 'package:shop_app/providers/authviewmodel.dart';
 import 'package:shop_app/providers/cart_provider.dart';
 import 'package:shop_app/globale_variable.dart';
 import 'package:shop_app/pages/home_page.dart';
@@ -8,8 +10,10 @@ import 'package:shop_app/pages/home_page.dart';
 import 'package:shop_app/pages/product_details.dart';
 import 'package:shop_app/providers/favorites_provider.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -17,11 +21,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    
-    return  MultiProvider( // Remplacer ChangeNotifierProvider par MultiProvider
+    return MultiProvider(
+      // Remplacer ChangeNotifierProvider par MultiProvider
       providers: [
         ChangeNotifierProvider(create: (context) => CartProvider()),
-        ChangeNotifierProvider(create: (context) => FavoritesProvider()), // Ajouter FavoritesProvider
+        ChangeNotifierProvider(create: (context) => FavoritesProvider()),
+        ChangeNotifierProvider(create: (_) => Authviewmodel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -42,7 +47,7 @@ class MyApp extends StatelessWidget {
               titleLarge: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
             ),
             useMaterial3: true),
-        home:SignIn(),
+        home: SignIn(),
       ),
     );
   }

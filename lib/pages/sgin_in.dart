@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/pages/home_page.dart';
 import 'package:shop_app/pages/sign_up.dart';
+import 'package:shop_app/providers/authviewmodel.dart';
 
 class SignIn extends StatelessWidget {
-  const SignIn({super.key});
+  SignIn({super.key});
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _pwdController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<Authviewmodel>(context);
     return Scaffold(
       body: Container(
         margin: const EdgeInsets.all(24),
@@ -13,7 +19,7 @@ class SignIn extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             _header(),
-            _inputField(context),
+            _inputField(authViewModel, context),
             _forgetPassword(),
             _signUp(context)
           ],
@@ -36,11 +42,12 @@ class SignIn extends StatelessWidget {
     );
   }
 
-  Widget _inputField(BuildContext context) {
+  Widget _inputField(authViewModel, context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
+          controller: _emailController,
           decoration: InputDecoration(
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(18),
@@ -54,6 +61,7 @@ class SignIn extends StatelessWidget {
           height: 10,
         ),
         TextField(
+          controller: _pwdController,
           obscureText: true,
           decoration: InputDecoration(
               border: OutlineInputBorder(
@@ -68,7 +76,15 @@ class SignIn extends StatelessWidget {
           height: 10,
         ),
         ElevatedButton(
-          onPressed: () => {},
+          onPressed: () async {
+            final email = _emailController.text.trim();
+            final pwd = _pwdController.text.trim();
+            final success = await authViewModel.login(email, pwd, context);
+            if (success) {
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => HomePage()));
+            }
+          },
           style: ElevatedButton.styleFrom(
               backgroundColor: const Color.fromRGBO(254, 206, 1, 1),
               padding: const EdgeInsets.symmetric(vertical: 16),

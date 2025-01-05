@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
           CurvedNavigationBarItem(
             child: SizedBox(
               height: 30,
-              child: Icon(Icons.settings, size: 30),
+              child: Icon(Icons.favorite, size: 30),
             ),
             label: '', // Empty label
           ),

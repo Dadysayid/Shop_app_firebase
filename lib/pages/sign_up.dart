@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/pages/home_page.dart';
+import 'package:shop_app/providers/authviewmodel.dart';
 
 class SignUp extends StatelessWidget {
   const SignUp({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authViewModel = Provider.of<Authviewmodel>(context);
+    final TextEditingController emailController = TextEditingController();
+    final TextEditingController passwordController = TextEditingController();
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -34,11 +40,13 @@ class SignUp extends StatelessWidget {
                           hintText: "User name",
                           fillColor: const Color.fromRGBO(245, 247, 249, 1),
                           filled: true,
-                          prefixIcon: const Icon(Icons.person, color: Colors.grey),
+                          prefixIcon:
+                              const Icon(Icons.person, color: Colors.grey),
                         ),
                       ),
                       const SizedBox(height: 20),
                       TextField(
+                        controller: emailController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
@@ -47,11 +55,13 @@ class SignUp extends StatelessWidget {
                           hintText: "Email",
                           fillColor: const Color.fromRGBO(245, 247, 249, 1),
                           filled: true,
-                          prefixIcon: const Icon(Icons.email, color: Colors.grey),
+                          prefixIcon:
+                              const Icon(Icons.email, color: Colors.grey),
                         ),
                       ),
                       const SizedBox(height: 20),
                       TextField(
+                        controller: passwordController,
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(18),
@@ -60,7 +70,8 @@ class SignUp extends StatelessWidget {
                           hintText: "Password",
                           fillColor: const Color.fromRGBO(245, 247, 249, 1),
                           filled: true,
-                          prefixIcon: const Icon(Icons.lock, color: Colors.grey),
+                          prefixIcon:
+                              const Icon(Icons.lock, color: Colors.grey),
                         ),
                       ),
                     ],
@@ -68,7 +79,18 @@ class SignUp extends StatelessWidget {
                 ],
               ),
               ElevatedButton(
-                onPressed: () => {},
+                onPressed: () async {
+                  final email = emailController.text.trim();
+                  final password = passwordController.text.trim();
+                  final success =
+                      await authViewModel.signUp(email, password, context);
+                  if (success) {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()));
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(254, 206, 1, 1),
                   padding: const EdgeInsets.symmetric(vertical: 16),
@@ -83,11 +105,21 @@ class SignUp extends StatelessWidget {
               Container(
                 height: 45,
                 decoration: BoxDecoration(
-                  border: Border.all(color: const Color.fromRGBO(254, 206, 1, 1)),
+                  border:
+                      Border.all(color: const Color.fromRGBO(254, 206, 1, 1)),
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final success =
+                        await authViewModel.loginWithGoogle(context);
+                    if (success) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()));
+                    }
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
